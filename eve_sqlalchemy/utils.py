@@ -65,6 +65,9 @@ def sqla_object_to_dict(obj, fields):
     if config.ETAG not in fields \
             and getattr(config, 'IF_MATCH', True):
         fields.append(config.ETAG)
+    for preserved_field in config.EXTRA_PRESERVED_METADATA or []:
+        if preserved_field not in fields:
+            fields.append(preserved_field)
 
     result = {}
     for field in map(lambda f: f.split('.', 1)[0], fields):
